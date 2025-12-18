@@ -42,7 +42,7 @@ export function DashboardTopbar() {
     <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b border-border bg-card px-6">
       <SidebarTrigger className="-ml-2" />
       <div className="flex flex-1 items-center justify-between">
-        <h1 className="text-lg font-semibold text-foreground">Kerjamail Dashboard</h1>
+        <h1 className="text-lg font-semibold text-foreground">IOT Dashboard TRPL B</h1>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

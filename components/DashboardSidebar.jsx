@@ -1,8 +1,18 @@
 "use client";
 
-import { Mail, LayoutDashboard, Building2, Zap, CreditCard, LogOut } from "lucide-react";
+import {
+  Mail,
+  LayoutDashboard,
+  Building2,
+  Zap,
+  CreditCard,
+  LogOut,
+} from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { Sidebar, useSidebar } from "@/components/ui/sidebar";
+import { logout } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -13,8 +23,32 @@ const menuItems = [
 ];
 
 export function DashboardSidebar() {
-  const { isMobile, openMobile, setOpenMobile } = useSidebar();
-  const handleLogout = () => (window.location.href = "/login");
+  const { isMobile, setOpenMobile } = useSidebar();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      // ambil token dari cookie
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+
+      // panggil API logout kalau token ada
+      if (token) {
+        await logout(token);
+      }
+
+      toast.success("Logout berhasil");
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal logout, sesi dihapus");
+    } finally {
+      // hapus cookie agar middleware block dashboard
+      document.cookie = "token=; path=/; max-age=0";
+      router.push("/login");
+    }
+  };
 
   return (
     <Sidebar
@@ -24,9 +58,8 @@ export function DashboardSidebar() {
       {/* Header */}
       <div className="flex items-center gap-2 p-4 border-b border-border">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-          <Mail className="h-5 w-5 text-primary-foreground" />
         </div>
-        <span className="text-lg font-semibold truncate">Kerjamail</span>
+        <span className="text-lg font-semibold truncate">IOT</span>
       </div>
 
       {/* Menu */}
@@ -37,7 +70,7 @@ export function DashboardSidebar() {
             href={item.url}
             className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-sidebar-foreground hover:bg-sidebar-accent transition"
             activeClassName="bg-sidebar-accent text-sidebar-primary font-medium"
-            onClick={() => isMobile && setOpenMobile(false)} // otomatis tutup drawer saat mobile
+            onClick={() => isMobile && setOpenMobile(false)}
           >
             <item.icon className="h-4 w-4 flex-shrink-0" />
             <span className="truncate">{item.title}</span>
