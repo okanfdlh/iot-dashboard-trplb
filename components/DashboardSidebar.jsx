@@ -6,10 +6,10 @@ import { Sidebar, useSidebar } from "@/components/ui/sidebar";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Manajemen Domain", url: "/dashboard/domains", icon: Building2 },
-  { title: "Manajemen Email", url: "/dashboard/mailboxes", icon: Mail },
-  { title: "Fitur", url: "/dashboard/features", icon: Zap },
-  { title: "Billing", url: "/dashboard/billing", icon: CreditCard },
+  { title: "Devices", url: "/dashboard/devices", icon: Building2 },
+  { title: "Monitoring Lampu", url: "/dashboard/lampu", icon: Mail },
+  { title: "Monitoring Suhu", url: "/dashboard/suhu", icon: Zap },
+  { title: "Terminal Kontrol", url: "/dashboard/kontrol", icon: CreditCard },
 ];
 
 export function DashboardSidebar() {
