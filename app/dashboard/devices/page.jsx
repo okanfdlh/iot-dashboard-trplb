@@ -44,26 +44,30 @@ export default function DevicesPage() {
   const activeDevice = devices.filter((d) => d.is_claimed).length;
 
   if (loading) {
-    return <div className="p-8 text-gray-500">Loading devices...</div>;
+    return (
+      <div className="flex items-center justify-center py-20 text-muted-foreground">
+        Loading devices...
+      </div>
+    );
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-10">
 
       {/* HERO */}
-      <div className="bg-white border rounded-2xl p-8 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-foreground">
               Monitoring Perangkat IoT
             </h1>
-            <p className="mt-2 text-gray-500 max-w-xl">
+            <p className="mt-2 text-muted-foreground max-w-xl">
               Kelola dan pantau seluruh perangkat IoT Anda secara real-time
               dengan kontrol yang sederhana dan aman.
             </p>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <StatBox title="Total Device" value={totalDevice} />
             <StatBox title="Device Aktif" value={activeDevice} />
           </div>
@@ -72,21 +76,21 @@ export default function DevicesPage() {
 
       {/* TITLE */}
       <div className="flex items-center gap-2">
-        <Network className="h-5 w-5 text-green-600" />
-        <h2 className="text-xl font-semibold text-gray-800">
+        <Network className="h-5 w-5 text-primary" />
+        <h2 className="text-xl font-semibold text-foreground">
           Daftar Device
         </h2>
       </div>
 
-      {/* EMPTY */}
+      {/* EMPTY STATE */}
       {devices.length === 0 && (
-        <div className="bg-gray-50 border rounded-xl p-6 text-center text-gray-500">
+        <div className="bg-muted border border-border rounded-xl p-6 text-center text-muted-foreground">
           Belum ada device yang terdaftar
         </div>
       )}
 
       {/* GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {devices.map((device) => (
           <DeviceCard key={device.device_code} device={device} />
         ))}
@@ -95,67 +99,71 @@ export default function DevicesPage() {
   );
 }
 
-/* ===== COMPONENTS ===== */
+/* ================= COMPONENTS ================= */
 
 function StatBox({ title, value }) {
   return (
-    <div className="flex items-center gap-3 bg-green-50 px-5 py-4 rounded-xl">
-      <Cpu className="h-8 w-8 text-green-600" />
+    <div className="flex items-center gap-4 bg-muted px-5 py-4 rounded-xl min-w-[160px]">
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
+        <Cpu className="h-6 w-6 text-primary-foreground" />
+      </div>
+
       <div>
-        <div className="text-sm text-gray-500">{title}</div>
-        <div className="text-xl font-bold text-gray-800">{value}</div>
+        <div className="text-sm text-muted-foreground">{title}</div>
+        <div className="text-xl font-bold text-foreground">{value}</div>
       </div>
     </div>
   );
 }
 
 function DeviceCard({ device }) {
+  const isActive = device.is_claimed;
+
   return (
-    <div className="bg-white rounded-2xl p-6 border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+    <div className="bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+      
       {/* HEADER */}
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between mb-5">
         <div>
-          <h3 className="font-semibold text-lg text-gray-800">
+          <h3 className="font-semibold text-lg text-foreground">
             {device.name}
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-muted-foreground">
             {device.device_code}
           </p>
         </div>
 
         <span
-          className={`px-3 py-1 text-xs rounded-full font-semibold ${
+          className={`px-3 py-1 text-xs rounded-full font-medium ${
             device.device_type === "lampu"
-              ? "bg-green-100 text-green-700"
-              : "bg-gray-100 text-gray-700"
+              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+              : "bg-muted text-muted-foreground"
           }`}
         >
           {device.device_type.toUpperCase()}
         </span>
       </div>
 
-      {/* INFO */}
-      <div className="space-y-2 text-sm text-gray-600">
+      {/* BODY */}
+      <div className="space-y-3 text-sm">
         <div className="flex items-center gap-2">
-          <span className="material-icons-outlined text-base text-gray-400">
-            power
-          </span>
-          Status:
-          {device.is_claimed ? (
-            <span className="text-green-600 font-semibold ml-1">
+          <Power className="h-4 w-4 text-muted-foreground" />
+          <span className="text-muted-foreground">Status:</span>
+
+          {isActive ? (
+            <span className="flex items-center gap-1 text-green-600 dark:text-green-400 font-medium">
+              <CheckCircle2 className="h-4 w-4" />
               Aktif
             </span>
           ) : (
-            <span className="text-gray-400 font-medium ml-1">
+            <span className="text-muted-foreground font-medium">
               Belum diklaim
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-gray-400">
-          <span className="material-icons-outlined text-sm">
-            schedule
-          </span>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <Clock className="h-4 w-4" />
           Terakhir online: {device.last_seen_at}
         </div>
       </div>

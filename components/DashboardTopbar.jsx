@@ -14,24 +14,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Mock data notifikasi
 const mockNotifications = [
-  {
-    id: 1,
-    message: "Domain example.com berhasil diverifikasi",
-    time: "2 jam lalu",
-    read: false,
-  },
-  {
-    id: 2,
-    message: "Mailbox support@example.com baru dibuat",
-    time: "5 jam lalu",
-    read: false,
-  },
-  {
-    id: 3,
-    message: "Alias contact@example.com dikonfigurasi",
-    time: "1 hari lalu",
-    read: true,
-  },
+  
 ];
 
 export function DashboardTopbar() {

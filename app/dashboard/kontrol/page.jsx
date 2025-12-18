@@ -70,78 +70,85 @@ export default function TerminalPage({ params }) {
     }
   };
 
-  const Switch = ({ active, onClick }) => (
+  function RelayCard({ label, desc, active, onClick, loading }) {
+    return (
+      <div
+        className={`rounded-lg border p-4 flex items-center justify-between
+        ${active
+            ? "bg-green-500/10 border-green-500/20"
+            : "bg-muted border-border"
+          }`}
+      >
+        <div>
+          <div className="font-medium text-foreground">{label}</div>
+          <div className="text-xs text-muted-foreground">{desc}</div>
+        </div>
+
+        <Switch active={active} onClick={onClick} loading={loading} />
+      </div>
+    );
+  }
+
+
+  const Switch = ({ active, onClick, loading }) => (
     <button
       disabled={loading}
       onClick={onClick}
-      className={`relative w-14 h-8 rounded-full transition ${
-        active ? "bg-green-500" : "bg-gray-300"
-      }`}
+      className={`relative w-12 h-7 rounded-full transition
+      ${active ? "bg-green-500" : "bg-muted"}`}
     >
       <span
-        className={`absolute top-1 w-6 h-6 bg-white rounded-full transition ${
-          active ? "translate-x-6" : "translate-x-1"
-        }`}
+        className={`absolute top-1 w-5 h-5 rounded-full bg-background shadow transition
+        ${active ? "translate-x-6" : "translate-x-1"}`}
       />
     </button>
   );
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
-      {/* Header */}
+    <div className="space-y-6 px-4 md:px-6 max-w-4xl mx-auto">
+      {/* HEADER */}
       <div>
-        <h1 className="text-2xl font-bold text-green-600 flex items-center gap-2">
-          <Power />
+        <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <Power className="h-6 w-6 text-green-500" />
           Kontrol Terminal
         </h1>
-        <div className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           ID: {terminalCode}
-        </div>
+        </p>
       </div>
 
-      {/* Card */}
-      <div className="bg-white border border-green-300 rounded-2xl p-6 shadow-sm">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* CARD */}
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm transition">
+        {/* RELAY GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Relay 1 */}
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-medium">Relay 1</div>
-              <div className="text-xs text-gray-500">
-                Output utama
-              </div>
-            </div>
-            <Switch
-              active={relay.is_on1}
-              onClick={() => toggleRelay(1)}
-            />
-          </div>
+          <RelayCard
+            label="Relay 1"
+            desc="Output utama"
+            active={relay.is_on1}
+            onClick={() => toggleRelay(1)}
+            loading={loading}
+          />
 
           {/* Relay 2 */}
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-medium">Relay 2</div>
-              <div className="text-xs text-gray-500">
-                Output cadangan
-              </div>
-            </div>
-            <Switch
-              active={relay.is_on2}
-              onClick={() => toggleRelay(2)}
-            />
-          </div>
+          <RelayCard
+            label="Relay 2"
+            desc="Output cadangan"
+            active={relay.is_on2}
+            onClick={() => toggleRelay(2)}
+            loading={loading}
+          />
         </div>
 
-        {/* Info */}
-        <div className="mt-6 pt-4 border-t text-sm text-gray-600 space-y-1">
-          <div>
-            Mode:{" "}
-            <span className="font-medium text-green-600">
-              Manual
-            </span>
+        {/* FOOTER INFO */}
+        <div className="mt-6 pt-4 border-t border-border text-sm flex flex-col gap-1">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Mode</span>
+            <span className="font-medium text-green-600">Manual</span>
           </div>
-          <div>
-            Last Update:{" "}
-            <span className="font-medium">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Last Update</span>
+            <span className="font-medium text-foreground">
               {lastUpdate}
             </span>
           </div>
@@ -149,4 +156,5 @@ export default function TerminalPage({ params }) {
       </div>
     </div>
   );
+
 }

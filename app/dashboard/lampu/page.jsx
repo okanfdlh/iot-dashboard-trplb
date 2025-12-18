@@ -1,18 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Lightbulb,
-  Sun,
-  Settings,
-  Timer,
-  Hand,
-} from "lucide-react";
-import {
-  getCahaya,
-  setCahayaMode,
-  setCahayaManual,
-} from "@/lib/api";
+import { Lightbulb, Sun, Settings, Timer, Hand } from "lucide-react";
+import { getCahaya, setCahayaMode, setCahayaManual } from "@/lib/api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -23,16 +13,12 @@ export default function CahayaPage() {
   const [loading, setLoading] = useState(true);
 
   const getToken = () =>
-    document.cookie
-      .split("; ")
-      .find((r) => r.startsWith("token="))
-      ?.split("=")[1];
+    document.cookie.split("; ").find((r) => r.startsWith("token="))?.split("=")[1];
 
   const loadData = async () => {
     try {
       const token = getToken();
       if (!token) return (window.location.href = "/login");
-
       const res = await getCahaya(token, DEVICE_ID);
       setData(res);
     } catch (err) {
@@ -44,73 +30,66 @@ export default function CahayaPage() {
 
   useEffect(() => {
     loadData();
-    const i = setInterval(loadData, 5000);
-    return () => clearInterval(i);
+    const interval = setInterval(loadData, 5000);
+    return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <div className="p-6 text-gray-500">Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center py-20 text-muted-foreground">
+        Memuat data lampu...
+      </div>
+    );
+
   if (!data) return null;
 
   const { unit } = data;
   const lampOn = unit.lamp_status === "ON";
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
       {/* HEADER */}
       <div className="flex items-center gap-3">
-        <Lightbulb className="h-9 w-9 text-green-600" />
-        <h1 className="font-bold text-green-600 border-b">
-          Monitoring Lampu & Cahaya
-        </h1>
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
+          <Lightbulb className="h-6 w-6 text-primary-foreground" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">
+            Monitoring Lampu & Cahaya
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Pantau status, intensitas, dan mode operasi lampu
+          </p>
+        </div>
       </div>
 
-      {/* INFO */}
-      <div className="grid md:grid-cols-3 gap-4">
-        {/* Status Lampu */}
-        <div className="rounded-2xl border p-8 text-center bg-white">
-          <Lightbulb
-            className={`mx-auto h-24 w-24 transition-colors ${
-              lampOn ? "text-yellow-500" : "text-gray-400"
+      {/* INFO CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <DashboardCard title="Status Lampu" icon={<Lightbulb />} center>
+          <div
+            className={`text-2xl font-bold ${
+              lampOn ? "text-yellow-600 dark:text-yellow-400" : "text-muted-foreground"
             }`}
-          />
-          <div className="text-sm text-gray-500 mt-4">Status Lampu</div>
-          <div className="text-2xl font-bold">
+          >
             {unit.lamp_status}
           </div>
-        </div>
+        </DashboardCard>
 
-        {/* Intensitas */}
-        <div className="rounded-2xl border p-6 text-center bg-yellow-50">
-          <Sun className="mx-auto h-12 w-12 text-yellow-600 mb-3" />
-          <div className="text-xs text-gray-500 uppercase">
-            Intensitas Cahaya
-          </div>
-          <div className="text-2xl font-bold">
-            {unit.current_lux} lux
-          </div>
-        </div>
+        <DashboardCard title="Intensitas Cahaya" icon={<Sun />} center>
+          <div className="text-2xl font-bold text-foreground">{unit.current_lux} lux</div>
+        </DashboardCard>
 
-        {/* Mode */}
-        <div className="rounded-2xl border p-6 text-center bg-blue-50">
-          <Settings className="mx-auto h-12 w-12 text-blue-600 mb-3" />
-          <div className="text-xs text-gray-500 uppercase">
-            Mode Operasi
-          </div>
-          <div className="text-2xl font-bold">
-            {unit.mode}
-          </div>
-        </div>
+        <DashboardCard title="Mode Operasi" icon={<Settings />} center>
+          <div className="text-2xl font-bold text-foreground">{unit.mode}</div>
+        </DashboardCard>
       </div>
 
-      {/* CONTROL */}
-      <div className="border rounded-2xl p-6 bg-white space-y-4">
-        <h2 className="text-lg font-semibold flex items-center gap-2 text-green-600">
-          <Settings className="h-5 w-5" />
-          Pengaturan Lampu
-        </h2>
-
-        <div className="flex gap-3">
+      {/* CONTROL PANEL */}
+      <DashboardCard title="Pengaturan Lampu" icon={<Settings />}>
+        {/* MODE BUTTONS */}
+        <div className="flex flex-wrap gap-3 mb-4">
           <Button
+            variant="outline"
             onClick={async () => {
               try {
                 const token = getToken();
@@ -121,13 +100,12 @@ export default function CahayaPage() {
                 toast.error(e.message);
               }
             }}
-            variant="outline"
           >
             <Sun className="h-4 w-4 mr-2" />
             Auto Lux
           </Button>
-
           <Button
+            variant="outline"
             onClick={async () => {
               try {
                 const token = getToken();
@@ -138,13 +116,12 @@ export default function CahayaPage() {
                 toast.error(e.message);
               }
             }}
-            variant="outline"
           >
             <Timer className="h-4 w-4 mr-2" />
             Auto Time
           </Button>
-
           <Button
+            variant="outline"
             onClick={async () => {
               try {
                 const token = getToken();
@@ -155,33 +132,43 @@ export default function CahayaPage() {
                 toast.error(e.message);
               }
             }}
-            variant="outline"
           >
             <Hand className="h-4 w-4 mr-2" />
             Manual
           </Button>
         </div>
 
-        {/* MANUAL BUTTON */}
+        {/* MANUAL TOGGLE */}
         <Button
           onClick={async () => {
             try {
               const token = getToken();
-              await setCahayaManual(
-                token,
-                DEVICE_ID,
-                lampOn ? "OFF" : "ON"
-              );
+              await setCahayaManual(token, DEVICE_ID, lampOn ? "OFF" : "ON");
               loadData();
             } catch (e) {
               toast.error(e.message);
             }
           }}
-          className={lampOn ? "bg-red-600 hover:bg-red-700" : "bg-green-600"}
+          className={`w-full sm:w-fit ${
+            lampOn ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"
+          }`}
         >
           {lampOn ? "Matikan Lampu" : "Nyalakan Lampu"}
         </Button>
+      </DashboardCard>
+    </div>
+  );
+}
+
+/* ================= COMPONENT ================= */
+function DashboardCard({ title, icon, children, center }) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition hover:shadow-md space-y-3">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="rounded-lg bg-muted p-2">{icon}</div>
+        <h3 className="font-medium text-foreground">{title}</h3>
       </div>
+      <div className={center ? "text-center" : ""}>{children}</div>
     </div>
   );
 }
