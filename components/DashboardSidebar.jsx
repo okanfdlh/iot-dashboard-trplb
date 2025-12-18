@@ -1,26 +1,49 @@
 "use client";
 
 import {
-  Mail,
   LayoutDashboard,
-  Building2,
-  Zap,
-  CreditCard,
+  Cpu,
+  Lightbulb,
+  Thermometer,
+  ToggleLeft,
   LogOut,
 } from "lucide-react";
+
 import { NavLink } from "@/components/NavLink";
 import { Sidebar, useSidebar } from "@/components/ui/sidebar";
 import { logout } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+
 const menuItems = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Devices", url: "/dashboard/devices", icon: Building2 },
-  { title: "Monitoring Lampu", url: "/dashboard/lampu", icon: Mail },
-  { title: "Monitoring Suhu", url: "/dashboard/suhu", icon: Zap },
-  { title: "Terminal Kontrol", url: "/dashboard/kontrol", icon: CreditCard },
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Devices",
+    url: "/dashboard/devices",
+    icon: Cpu,
+  },
+  {
+    title: "Monitoring Lampu",
+    url: "/dashboard/lampu",
+    icon: Lightbulb,
+  },
+  {
+    title: "Monitoring Suhu",
+    url: "/dashboard/suhu",
+    icon: Thermometer,
+  },
+  {
+    title: "Terminal Kontrol",
+    url: "/dashboard/kontrol",
+    icon: ToggleLeft,
+  },
 ];
+
 
 export function DashboardSidebar() {
   const { isMobile, setOpenMobile } = useSidebar();
@@ -57,7 +80,8 @@ export function DashboardSidebar() {
     >
       {/* Header */}
       <div className="flex items-center gap-2 p-4 border-b border-border">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <Cpu className="h-4 w-4" />
         </div>
         <span className="text-lg font-semibold truncate">IOT</span>
       </div>

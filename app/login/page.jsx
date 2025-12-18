@@ -12,9 +12,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Mail } from "lucide-react";
 import { toast } from "sonner";
 import { login } from "@/lib/api";
+import { Cpu } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,7 +52,9 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
+            <Cpu className="h-6 w-6 text-primary-foreground" />
           </div>
+
           <CardTitle className="text-2xl font-bold">
             Selamat Datang di Dashboard IOT TRPL B
           </CardTitle>
