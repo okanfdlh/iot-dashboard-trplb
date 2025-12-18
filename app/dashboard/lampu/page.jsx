@@ -8,8 +8,17 @@ import { Button } from "@/components/ui/button";
 
 const DEVICE_ID = "lamp-B001";
 
+// default data sementara sebelum API datang
+const defaultData = {
+  unit: {
+    lamp_status: "OFF",
+    current_lux: 0,
+    mode: "MANUAL",
+  },
+};
+
 export default function CahayaPage() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(defaultData);
   const [loading, setLoading] = useState(true);
 
   const getToken = () =>
@@ -33,15 +42,6 @@ export default function CahayaPage() {
     const interval = setInterval(loadData, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  if (loading)
-    return (
-      <div className="flex justify-center py-20 text-muted-foreground">
-        Memuat data lampu...
-      </div>
-    );
-
-  if (!data) return null;
 
   const { unit } = data;
   const lampOn = unit.lamp_status === "ON";
@@ -86,7 +86,6 @@ export default function CahayaPage() {
 
       {/* CONTROL PANEL */}
       <DashboardCard title="Pengaturan Lampu" icon={<Settings />}>
-        {/* MODE BUTTONS */}
         <div className="flex flex-wrap gap-3 mb-4">
           <Button
             variant="outline"
@@ -138,7 +137,6 @@ export default function CahayaPage() {
           </Button>
         </div>
 
-        {/* MANUAL TOGGLE */}
         <Button
           onClick={async () => {
             try {
@@ -160,7 +158,6 @@ export default function CahayaPage() {
   );
 }
 
-/* ================= COMPONENT ================= */
 function DashboardCard({ title, icon, children, center }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition hover:shadow-md space-y-3">
