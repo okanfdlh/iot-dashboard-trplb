@@ -27,7 +27,7 @@ export function DashboardTopbar() {
 
       <div className="flex flex-1 items-center justify-between">
         <h1 className="text-lg font-semibold text-foreground">
-          IOT Dashboard TRPL B
+          IoT Dashboard TRPL B
         </h1>
 
         <div className="flex items-center gap-2">

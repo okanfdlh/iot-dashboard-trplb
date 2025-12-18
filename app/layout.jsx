@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Kerjamail Dashboard",
-  description: "Kerjamail Dashboard",
+  title: "IoT Dashboard TRPL B",
+  description: "IoT Dashboard TRPL B",
 };
 
 export default function RootLayout({ children }) {

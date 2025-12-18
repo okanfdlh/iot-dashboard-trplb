@@ -83,7 +83,7 @@ export function DashboardSidebar() {
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Cpu className="h-4 w-4" />
         </div>
-        <span className="text-lg font-semibold truncate">IOT</span>
+        <span className="text-lg font-semibold truncate">IoT</span>
       </div>
 
       {/* Menu */}
