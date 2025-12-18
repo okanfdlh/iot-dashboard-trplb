@@ -56,7 +56,7 @@ export default function LoginPage() {
           </div>
 
           <CardTitle className="text-2xl font-bold">
-            Selamat Datang di Dashboard IOT TRPL B
+            Selamat Datang di Dashboard IoT TRPL B
           </CardTitle>
           <CardDescription>
             Masukkan email dan kata sandi Anda untuk mengakses dashboard
