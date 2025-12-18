@@ -14,6 +14,15 @@ pnpm dev
 bun dev
 ```
 
+## Buat Environment Variable
+
+Buat file `.env` di root project dan isi dengan variable yang ada di file `.env`
+contoh:
+```bash
+ENV=development
+NEXT_PUBLIC_API_URL=http://localhost:3000 #ganti ke url api
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
